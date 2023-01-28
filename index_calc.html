@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Document</title>
+	<link rel="stylesheet" href="style_calc.css">
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/css/bootstrap.min.css"
+		integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+	<script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+		integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.6/dist/umd/popper.min.js"
+		integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous">
+	</script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.2.1/dist/js/bootstrap.min.js"
+		integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous">
+	</script>
+</head>
+
+<body>
+	<!-- NAVBAR -->
+	<nav class="navbar navbar-expand-lg navbar-light">
+		<a class="navbar-brand" style="font-weight: bolder;" href="#">Tools</a>
+		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ml-auto">
+
+				<li class="nav-item">
+                    <a class="nav-link" href="index.html">Weather</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index_BMI.html">BMI</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index_drum.html">Drum</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index_age.html">Age</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="index_calc.html">Calculator</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index_counter.html">Counter</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index_dice.html">Dice</a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="index_tic.html">Tic-Tac-Toe</a>
+              </li>
+			</ul>
+		</div>
+	</nav>
+
+    
+<section>
+    <div class="calculator" >
+        <div class="screen">0</div>
+        <div class="buttons">
+          <div class="numbers">
+            <button data-val="9">9</button>
+            <button data-val="8">8</button>
+            <button data-val="7">7</button>
+            <button data-val="6">6</button>
+            <button data-val="5">5</button>
+            <button data-val="4">4</button>
+            <button data-val="3">3</button>
+            <button data-val="2">2</button>
+            <button data-val="1">1</button>
+            <button data-val="clear">C</button>
+            <button data-val=".">.</button>
+            <button data-val="0" href="0">0</button>
+          </div>
+          <div class="operators">
+            <button data-val="÷">÷</button>
+            <button data-val="x">x</button>
+            <button data-val="-">-</button>
+            <button data-val="+">+</button>
+            <button data-val="=">=</button>
+          </div>
+        </div>
+      </div>
+</section>
+
+  <script>
+    var $keys = $('.calculator button');
+var $screen = $('.screen');
+var decimal = false;
+var operators = ['+', '-', 'x', '÷'];
+
+$keys.click(function() {
+  var keyVal = $(this).data('val');
+  output = $('.screen').html();
+
+  console.log(keyVal);
+
+  // clear
+  if (keyVal == 'clear') {
+    $screen.html('');
+    decimal = false;
+  }
+  // equal
+  else if (keyVal == '=') {
+    var equation = output;
+    var lastChar = equation[equation.length - 1];
+    equation = equation.replace(/x/g, '*').replace(/÷/g, '/');
+    if (operators.indexOf(lastChar) > -1 || lastChar == '.')
+      equation = equation.replace(/.$/, '');
+    if (equation) {
+      $screen.html(eval(equation));
+    }
+    decimal = false;
+  }
+  // operators
+  else if ($(this).parent().is('.operators')) {
+    var lastChar = output[output.length - 1];
+    if (output != '' && operators.indexOf(lastChar) == -1) {
+      $screen.html($screen.html() + keyVal);
+    } else if (output == '' && keyVal == '-') {
+      $screen.html($screen.html() + keyVal);
+    }
+    if (operators.indexOf(lastChar) > -1 && output.length > 1) {
+      $screen.html($screen.html().replace(/.$/, keyVal));
+    }
+    decimal = false;
+  }
+  // decimal
+  else if (keyVal == '.') {
+    if (!decimal) {
+      $screen.html($screen.html() + keyVal);
+      decimal = true;
+    }
+  }
+  // buttons
+  else {
+    $screen.html($screen.html() + keyVal);
+  }
+})
+
+$(window).keydown(function(e) {
+  console.log(e.which);
+  switch (e.which) {
+    case 96:
+      key = 0;
+      break;
+    case 97:
+      key = 1;
+      break;
+    case 98:
+      key = 2;
+      break;
+    case 99:
+      key = 3;
+      break;
+    case 100:
+      key = 4;
+      break;
+    case 101:
+      key = 5;
+      break;
+    case 102:
+      key = 6;
+      break;
+    case 103:
+      key = 7;
+      break;
+    case 104:
+      key = 8;
+      break;
+    case 105:
+      key = 9;
+      break;
+    case 111:
+      key = '÷';
+      break;
+    case 109:
+      key = '-';
+      break;
+    case 106:
+      key = 'x';
+      break;
+    case 107:
+      key = '+';
+      break;
+    case 13:
+      key = '=';
+      break;
+    case 110:
+      key = '.';
+      break;
+    case 27:
+      key = 'clear';
+      break;
+    default:
+      return false;
+  }
+
+  $('[data-val="' + key + '"]').addClass('active').click();
+
+}).keyup(function(){
+  $('.active').removeClass('active');
+});
+
+
+
+  </script>
+</body>
+</html>
